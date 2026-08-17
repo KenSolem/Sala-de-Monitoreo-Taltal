@@ -3,88 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título generalizado -->
     <title>Sala de Monitoreo</title>
 
-    <!-- 1. BOOTSTRAP 5 CSS (Vía CDN) -->
+    <!-- BOOTSTRAP 5 CSS (Vía CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Librería HLS.js externa necesaria para reproducciones m3u8 del widget -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-
-    <!-- Estilos del Widget original (intactos para no romper el diseño) -->
     <style>
-        /* ESTILOS TOTALMENTE AISLADOS CON DIMENSIONES Y LETRAS GRANDES */
-        .tt-widget-container {
-            --tt-bg-card: #141418;
-            --tt-modal-bg: #1a1a20;
-            --tt-orange: #d35400;
-            --tt-orange-hover: #e67e22;
-            --tt-orange-active: #b94000;
-            --tt-glow: rgba(211, 84, 0, 0.35);
-            --tt-text: #f0f0f5;
-            --tt-text-muted: #a0a0b0;
-            --tt-border: rgba(255, 255, 255, 0.12);
-
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--tt-bg-card);
-            border: 2px solid var(--tt-orange);
-            border-radius: 16px;
-            padding: clamp(18px, 4vw, 28px);
-            width: 100%; /* Ajustado al 100% para que Bootstrap controle el ancho */
-            margin: 0 auto;
-            text-align: center;
-            box-shadow: 0 12px 35px var(--tt-glow), 0 6px 30px rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            gap: clamp(14px, 2.5vw, 18px);
-            box-sizing: border-box;
-            color: var(--tt-text);
-            line-height: 1.4;
+        /* Estilo simple para asegurar que el iframe del reproductor ocupe buen espacio */
+        .visor-tv {
+            width: 100%;
+            height: 75vh; /* Ocupa el 75% del alto de la pantalla */
+            border: 2px solid #d35400; /* Borde naranjo para mantener el estilo original */
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            background-color: #141418;
         }
-
-        .tt-widget-container *, .tt-widget-container *::before, .tt-widget-container *::after, #tt-modal-legal * {
-            box-sizing: border-box; margin: 0; padding: 0;
-        }
-        .tt-widget-container button:focus-visible, .tt-widget-container a:focus-visible, .tt-widget-container input:focus-visible {
-            outline: 3px solid var(--tt-orange-hover) !important; outline-offset: 3px;
-        }
-        .tt-header h1 { color: var(--tt-orange-hover); text-transform: uppercase; letter-spacing: 1.8px; font-size: clamp(20px, 5vw, 28px); font-weight: 800; text-shadow: 0 0 12px var(--tt-glow); margin-bottom: 4px; }
-        .tt-header p { font-size: clamp(12px, 3.2vw, 15px); color: var(--tt-text-muted); letter-spacing: 0.8px; font-weight: 600; }
-        .tt-banner-web { display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #1f1f28, #2a2a3a); border: 2px solid var(--tt-orange); color: #ffffff; text-decoration: none; padding: clamp(12px, 2.8vw, 16px) 18px; border-radius: 10px; font-size: clamp(13px, 3.3vw, 16px); font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; transition: all 0.25s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); -webkit-tap-highlight-color: transparent; }
-        .tt-banner-web:hover { background: linear-gradient(135deg, var(--tt-orange-active), var(--tt-orange)); border-color: var(--tt-orange-hover); box-shadow: 0 6px 20px var(--tt-glow); transform: translateY(-2px); color: #ffffff; }
-        .tt-banner-web:active { transform: scale(0.98); }
-        .tt-banner-icon { font-size: 1.2em; }
-        .tt-video-box { width: 100%; background: #000000; border-radius: 10px; overflow: hidden; border: 2px solid var(--tt-orange); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85); }
-        .tt-video-box video { width: 100%; aspect-ratio: 16 / 9; background: #000000; display: block; object-fit: contain; }
-        .tt-playlist { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-        .tt-canal-btn { background: rgba(30, 30, 38, 0.9); color: var(--tt-text); border: 1px solid var(--tt-border); padding: clamp(10px, 2.2vw, 14px) 16px; font-size: clamp(13px, 3.2vw, 15px); border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.25s ease; display: flex; align-items: center; gap: 10px; font-weight: 600; width: 100%; -webkit-tap-highlight-color: transparent; }
-        .tt-canal-btn span { color: var(--tt-orange); font-size: 13px; }
-        .tt-canal-btn:hover { background: rgba(45, 45, 55, 0.95); border-color: var(--tt-orange); color: var(--tt-orange-hover); }
-        .tt-canal-btn:active { transform: scale(0.98); }
-        .tt-canal-btn.tt-activo { background: linear-gradient(135deg, var(--tt-orange-active), var(--tt-orange)); color: #ffffff; border-color: var(--tt-orange-hover); box-shadow: 0 4px 12px rgba(211, 84, 0, 0.45); font-weight: 700; }
-        .tt-canal-btn.tt-activo span { color: #ffffff; }
-        .tt-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--tt-border), transparent); margin: 4px 0; }
-        .tt-iptv-box { background-color: #0d0d12; border: 1px solid #282835; border-radius: 10px; padding: clamp(10px, 2.5vw, 15px); text-align: left; }
-        .tt-iptv-box label { display: block; font-size: clamp(11.5px, 2.8vw, 13px); text-transform: uppercase; letter-spacing: 1px; color: var(--tt-orange-hover); font-weight: bold; margin-bottom: 6px; }
-        .tt-iptv-input-group { display: flex; gap: 8px; }
-        .tt-iptv-input-group input { flex: 1; background: #181822; border: 1px solid #333345; color: #ffffff; padding: 9px 12px; border-radius: 6px; font-size: clamp(12px, 3vw, 14px); outline: none; width: 100%; }
-        .tt-btn-copy { background-color: var(--tt-orange); color: #ffffff; border: none; padding: 9px 16px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: clamp(12px, 3vw, 14px); transition: background 0.2s; white-space: nowrap; }
-        .tt-btn-copy:hover { background-color: var(--tt-orange-hover); }
-        .tt-actions { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .tt-btn-aviso { background: transparent; border: 1px solid var(--tt-orange); color: var(--tt-orange-hover); padding: 7px 18px; border-radius: 20px; cursor: pointer; font-size: clamp(11.5px, 2.8vw, 13px); font-weight: 600; transition: all 0.25s ease; }
-        .tt-btn-aviso:hover { background-color: var(--tt-orange); color: #ffffff; box-shadow: 0 0 10px var(--tt-glow); }
-        .tt-btn-download { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background-color: var(--tt-orange); color: #ffffff; text-decoration: none; padding: clamp(10px, 2.5vw, 13px) 16px; border-radius: 8px; font-size: clamp(12px, 3.2vw, 14px); font-weight: 700; letter-spacing: 0.5px; transition: all 0.25s ease; box-shadow: 0 4px 12px var(--tt-glow); width: 100%; }
-        .tt-btn-download:hover { background-color: var(--tt-orange-hover); transform: translateY(-1px); }
-        .tt-btn-download.tt-btn-tv { background-color: #a04000; }
-        .tt-btn-download.tt-btn-tv:hover { background-color: var(--tt-orange); }
-        #tt-modal-legal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 20px; }
-        .tt-modal-content { background-color: var(--tt-modal-bg); border: 1px solid var(--tt-border); border-top: 5px solid var(--tt-orange); border-radius: 14px; width: min(520px, 94vw); padding: 24px; position: relative; box-shadow: 0 12px 35px rgba(0,0,0,0.9); max-height: 82vh; overflow-y: auto; color: var(--tt-text); }
-        .tt-modal-close { position: absolute; top: 12px; right: 18px; color: var(--tt-text-muted); font-size: 26px; font-weight: bold; cursor: pointer; }
-        .tt-modal-close:hover { color: var(--tt-orange-hover); }
-        .tt-modal-content h3 { color: var(--tt-orange-hover); font-size: 18px; margin-bottom: 14px; text-align: left; }
-        .tt-legal-text { color: #d0d0e0; font-size: 13px; line-height: 1.6; text-align: left; }
-        .tt-legal-text p { margin-bottom: 10px; }
-        .tt-legal-text p:last-child { margin-bottom: 0; }
     </style>
 </head>
 <body class="bg-dark text-white">
@@ -92,6 +26,7 @@
     <!-- Barra de navegación superior -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary bg-gradient shadow-sm mb-4">
         <div class="container-fluid">
+            <!-- Nombre generalizado -->
             <a class="navbar-brand fw-bold" href="#">🚨 Sala de Monitoreo</a>
             <span class="navbar-text">
                 Actualizado en tiempo real
@@ -103,52 +38,10 @@
     <div class="container-fluid px-4">
         <div class="row g-4">
             
-            <!-- COLUMNA IZQUIERDA: Transmisión Principal (ocupa 8 de 12 espacios) -->
+            <!-- COLUMNA IZQUIERDA: Transmisión Directa desde la web de Taltal TV (ocupa 8 de 12 espacios) -->
             <div class="col-lg-8">
-                <!-- MARCO UNIFICADO AISLADO GRANDE (Código intacto) -->
-                <div class="tt-widget-container">
-                    <div class="tt-header">
-                        <h1>TALTAL TV</h1>
-                        <p>TRANSMISIÓN EN VIVO Y LISTAS IPTV</p>
-                    </div>
-                    <a href="https://www.taltaltv.net/data/iptv%20local.HTML" target="_blank" rel="noopener noreferrer" class="tt-banner-web">
-                        <span class="tt-banner-icon">&#127760;</span> Reproductor Web Lista de canales
-                    </a>
-                    <div class="tt-video-box">
-                        <video id="tt-reproductor" controls preload="auto" playsinline webkit-playsinline></video>
-                    </div>
-                    <div class="tt-playlist" id="tt-playlist-container">
-                        <button class="tt-canal-btn tt-activo" data-stream="https://183.bozztv.com/giatv/giatv-TALTALTVHD/TALTALTVHD/chunks.m3u8">
-                            <span>▶</span> TALTAL TV PRINCIPAL
-                        </button>
-                        <button class="tt-canal-btn" data-stream="https://183.bozztv.com/giatv/giatv-TALTALTVANIMACION2/TALTALTVANIMACION2/chunks.m3u8">
-                            <span>▶</span> TALTAL TV ANIMACION
-                        </button>
-                        <button class="tt-canal-btn" data-stream="https://183.bozztv.com/giatv/giatv-TALTALTVANIMACION/TALTALTVANIMACION/chunks.m3u8">
-                            <span>▶</span> TALTAL TV SERIES
-                        </button>
-                        <button class="tt-canal-btn" data-stream="https://live20.bozztv.com/giatvplayout7/giatv-208260/tracks-v1a1/mono.ts.m3u8">
-                            <span>▶</span> DOCUMENTALES TALTALINOS
-                        </button>
-                    </div>
-                    <div class="tt-divider"></div>
-                    <div class="tt-iptv-box">
-                        <label for="tt-iptv-url">Nuestra Lista IPTV (M3U):</label>
-                        <div class="tt-iptv-input-group">
-                            <input type="text" id="tt-iptv-url" value="https://gia.tv/streams/208260.m3u" readonly>
-                            <button type="button" class="tt-btn-copy" id="tt-btn-copy">Copiar</button>
-                        </div>
-                    </div>
-                    <div class="tt-actions">
-                        <button type="button" id="tt-abrir-modal" class="tt-btn-aviso">Ver Aviso Legal</button>
-                        <a href="https://www.taltaltv.net/data/APK%20ANDROID%20CELULAR%20TABLET%20V1.apk" class="tt-btn-download" download>
-                            &#128241; DESCARGA APK TABLET Y CELULAR
-                        </a>
-                        <a href="https://www.taltaltv.net/data/TALTALTV.NETV6.2-ogyQ-iMJ9fCFgu_1xFtFBAGOOGLETVANDROID.apk" class="tt-btn-download tt-btn-tv" download>
-                            &#128250; DESCARGA APK ANDROID TV Y GOOGLE TV
-                        </a>
-                    </div>
-                </div>
+                <!-- Aquí incrustamos la página de Taltal TV mediante un iframe -->
+                <iframe src="https://www.taltaltv.net/data/iptv%20local.HTML" class="visor-tv" allowfullscreen></iframe>
             </div>
 
             <!-- COLUMNA DERECHA: Tarjetas de Información Adicional (ocupa 4 de 12 espacios) -->
@@ -169,152 +62,104 @@
 
                 <!-- Tarjeta 2: Sismos SENAPRED -->
                 <div class="card bg-dark border-secondary mb-3 shadow">
-                    <div class="card-header border-secondary fw-bold text-danger">
-                        📉 Alertas Sísmicas
+                    <div class="card-header border-secondary fw-bold text-danger d-flex justify-content-between align-items-center">
+                        <span>📉 Alertas Sísmicas</span>
+                        <small id="estado-sismos" class="text-muted">Actualizando...</small>
                     </div>
-                    <div class="card-body">
-                        <!-- Aquí pones el iframe o widget de sismología -->
-                        <div class="p-3 text-muted text-center">
-                            <small><em>[Espacio para visor de sismos]</em></small>
-                        </div>
+                    <div class="card-body p-0">
+                        <!-- Aquí se inyectará la lista de sismos mediante JavaScript -->
+                        <ul id="lista-sismos" class="list-group list-group-flush rounded-bottom">
+                            <li class="list-group-item bg-dark text-white text-center py-3">
+                                <div class="spinner-border text-danger spinner-border-sm" role="status"></div>
+                                <span class="ms-2">Cargando datos...</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Tarjeta 3: Clima local -->
+                <!-- Tarjeta 3: Clima local (Windy) -->
                 <div class="card bg-dark border-secondary shadow">
                     <div class="card-header border-secondary fw-bold text-warning">
                         ⛅ Condiciones Meteorológicas
                     </div>
-                    <div class="card-body">
-                         <!-- Aquí pones el widget del tiempo (ej. Windy o similar) -->
-                         <div class="p-3 text-muted text-center">
-                            <small><em>[Espacio para widget de clima]</em></small>
+                    <div class="card-body p-0">
+                        <!-- Contenedor responsivo para el mapa de Windy -->
+                        <div style="width: 100%; height: 350px; border-radius: 0 0 6px 6px; overflow: hidden;">
+                            <iframe 
+                                width="100%" 
+                                height="100%" 
+                                src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=%C2%B0C&metricWind=km/h&zoom=10&overlay=wind&product=ecmwf&level=surface&lat=-25.405&lon=-70.483&detailLat=-25.405&detailLon=-70.483&marker=true&message=true" 
+                                frameborder="0" 
+                                title="Mapa Meteorológico Taltal">
+                            </iframe>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- VENTANA EMERGENTE AISLADA -->
-    <div id="tt-modal-legal">
-        <div class="tt-modal-content">
-            <span id="tt-cerrar-modal" class="tt-modal-close">&times;</span>
-            <h3>Aviso Legal</h3>
-            <div class="tt-legal-text">
-                <p>Este reproductor web es compatible con diversos navegadores y dispositivos, incluyendo Smart TV, Android, teléfonos móviles y ordenadores.</p>
-                <p>El contenido disponible, como listas de canales, puede incluir enlaces que provienen de fuentes externas a este sitio. No alojamos, transmitimos ni controlamos directamente dicho contenido.</p>
-                <p>Algunos enlaces pueden dirigir a canales oficiales que ofrecen transmisiones gratuitas a través de sus propios sitios web o aplicaciones.</p>
-                <p>Este sitio no se responsabiliza por la disponibilidad, calidad, legalidad ni contenido de las transmisiones proporcionadas por terceros.</p>
-                <p>La calidad del servicio de streaming depende exclusivamente de la fuente original.</p>
-                <p>Somos un canal online que ofrece acceso a listas IPTV para la visualización de canales de libre acceso. No comercializamos servicios IPTV.</p>
-                <p>Nuestra plataforma tiene fines informativos y de entretenimiento. Somos un canal online sin fines de lucro.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. BOOTSTRAP 5 JS (Vía CDN para interactividad si la necesitas luego) -->
+    <!-- BOOTSTRAP 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.css"></script>
-
-    <!-- JAVASCRIPT AISLADO DEL WIDGET -->
+    <!-- SCRIPT DE SISMOLOGÍA DE CHILE -->
     <script>
-        (function() {
-            'use strict';
-            let hlsInstance = null;
-            function initWidget() {
-                const videoEl = document.getElementById('tt-reproductor');
-                const playlistContainer = document.getElementById('tt-playlist-container');
-                const btnCopy = document.getElementById('tt-btn-copy');
-                const iptvInput = document.getElementById('tt-iptv-url');
-                const modalEl = document.getElementById('tt-modal-legal');
-                const btnAbrirModal = document.getElementById('tt-abrir-modal');
-                const btnCerrarModal = document.getElementById('tt-cerrar-modal');
-
-                if (!videoEl) return;
-
-                function cargarVideo(url, autoPlay = true) {
-                    if (hlsInstance) {
-                        hlsInstance.destroy();
-                        hlsInstance = null;
-                    }
-                    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                        hlsInstance = new Hls({ xhrSetup: function (xhr) { xhr.withCredentials = false; }});
-                        hlsInstance.loadSource(url);
-                        hlsInstance.attachMedia(videoEl);
-                        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-                            if (autoPlay) {
-                                videoEl.play().catch(function(err) { console.log("Autoplay bloqueado:", err); });
-                            }
-                        });
-                        hlsInstance.on(Hls.Events.ERROR, function(event, data) {
-                            if (data.fatal) {
-                                switch(data.type) {
-                                    case Hls.ErrorTypes.NETWORK_ERROR: hlsInstance.startLoad(); break;
-                                    case Hls.ErrorTypes.MEDIA_ERROR: hlsInstance.recoverMediaError(); break;
-                                    default: hlsInstance.destroy(); break;
-                                }
-                            }
-                        });
-                    } else if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
-                        videoEl.src = url;
-                        videoEl.addEventListener('loadedmetadata', function() {
-                            if (autoPlay) {
-                                videoEl.play().catch(function(err) { console.log("Autoplay bloqueado:", err); });
-                            }
-                        }, { once: true });
-                    }
-                }
-
-                if (playlistContainer) {
-                    playlistContainer.addEventListener('click', function(e) {
-                        const target = e.target.closest('.tt-canal-btn');
-                        if (!target) return;
-                        const streamUrl = target.getAttribute('data-stream');
-                        if (!streamUrl) return;
-                        const botones = playlistContainer.querySelectorAll('.tt-canal-btn');
-                        botones.forEach(function(btn) { btn.classList.remove('tt-activo'); });
-                        target.classList.add('tt-activo');
-                        cargarVideo(streamUrl, true);
-                    });
-                }
-
-                if (btnCopy && iptvInput) {
-                    btnCopy.addEventListener('click', function() {
-                        iptvInput.select();
-                        iptvInput.setSelectionRange(0, 99999);
-                        navigator.clipboard.writeText(iptvInput.value).then(function() {
-                            btnCopy.textContent = '¡Copiado!';
-                            btnCopy.style.backgroundColor = '#2e7d32';
-                            setTimeout(function() {
-                                btnCopy.textContent = 'Copiar';
-                                btnCopy.style.backgroundColor = '';
-                            }, 2000);
-                        });
-                    });
-                }
-
-                if (btnAbrirModal && modalEl && btnCerrarModal) {
-                    btnAbrirModal.addEventListener('click', function() { modalEl.style.display = 'flex'; });
-                    btnCerrarModal.addEventListener('click', function() { modalEl.style.display = 'none'; });
-                    modalEl.addEventListener('click', function(e) {
-                        if (e.target === modalEl) modalEl.style.display = 'none';
-                    });
-                }
-
-                const primerCanalBtn = playlistContainer ? playlistContainer.querySelector('.tt-canal-btn') : null;
-                if (primerCanalBtn) {
-                    const inicialUrl = primerCanalBtn.getAttribute('data-stream');
-                    cargarVideo(inicialUrl, false);
-                }
+        async function cargarSismos() {
+            const urlSismos = 'https://api.gael.cloud/general/public/sismos';
+            const contenedor = document.getElementById('lista-sismos');
+            const estado = document.getElementById('estado-sismos');
+            
+            try {
+                const respuesta = await fetch(urlSismos);
+                const sismos = await respuesta.json();
+                
+                // Limpiar la lista de carga
+                contenedor.innerHTML = '';
+                
+                // Tomar solo los últimos 3 sismos (puedes cambiar el 3 por el número que quieras)
+                const ultimosSismos = sismos.slice(0, 3);
+                
+                ultimosSismos.forEach(sismo => {
+                    // Configurar el color de la magnitud según su fuerza
+                    const magnitud = parseFloat(sismo.Magnitud);
+                    let colorMag = 'bg-secondary'; // Magnitud baja
+                    if (magnitud >= 4.0 && magnitud < 5.0) colorMag = 'bg-warning text-dark'; // Media
+                    if (magnitud >= 5.0) colorMag = 'bg-danger'; // Alta
+                    
+                    // Formatear la fecha (cortar los segundos para que se vea más limpio)
+                    const fechaCorta = sismo.Fecha.substring(0, 16);
+    
+                    // Crear el elemento de la lista para cada sismo
+                    const elemento = `
+                        <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold" style="font-size: 0.9rem;">${sismo.RefGeografica}</div>
+                                <small class="text-muted">${fechaCorta} • Prof: ${sismo.Profundidad} km</small>
+                            </div>
+                            <span class="badge ${colorMag} rounded-pill fs-6">${sismo.Magnitud}</span>
+                        </li>
+                    `;
+                    contenedor.innerHTML += elemento;
+                });
+                
+                // Actualizar el estado con la hora de carga
+                const ahora = new Date();
+                estado.innerText = `Actualizado: ${ahora.getHours().toString().padStart(2, '0')}:${ahora.getMinutes().toString().padStart(2, '0')}`;
+                
+            } catch (error) {
+                console.error('Error al cargar sismos:', error);
+                contenedor.innerHTML = `
+                    <li class="list-group-item bg-dark text-danger text-center">
+                        No se pudieron cargar los datos. Reintentando...
+                    </li>
+                `;
             }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initWidget);
-            } else {
-                initWidget();
-            }
-        })();
+        }
+    
+        // Cargar los sismos apenas se abra la página
+        cargarSismos();
+        
+        // Configurar para que se actualice solo cada 5 minutos (300000 milisegundos)
+        setInterval(cargarSismos, 300000);
     </script>
 </body>
 </html>
