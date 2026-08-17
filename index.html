@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Título generalizado -->
     <title>Sala de Monitoreo</title>
 
-    <!-- BOOTSTRAP 5 CSS (Vía CDN) -->
+    <!-- BOOTSTRAP 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
-        /* Estilo simple para asegurar que el iframe del reproductor ocupe buen espacio */
         .visor-tv {
             width: 100%;
-            height: 75vh; /* Ocupa el 75% del alto de la pantalla */
-            border: 2px solid #d35400; /* Borde naranjo para mantener el estilo original */
+            height: 75vh;
+            border: 2px solid #d35400;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.8);
             background-color: #141418;
@@ -26,7 +24,6 @@
     <!-- Barra de navegación superior -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary bg-gradient shadow-sm mb-4">
         <div class="container-fluid">
-            <!-- Nombre generalizado -->
             <a class="navbar-brand fw-bold" href="#">🚨 Sala de Monitoreo</a>
             <span class="navbar-text">
                 Actualizado en tiempo real
@@ -37,7 +34,8 @@
     <!-- Contenedor principal Grid de Bootstrap -->
     <div class="container-fluid px-4">
         <div class="row g-4">
-            <!-- ALERTA MUNICIPAL - PRIORIDAD ALTA (Ocupa todo el ancho) -->
+            
+            <!-- ALERTA MUNICIPAL - PRIORIDAD ALTA -->
             <div class="col-12">
                 <div class="card border-primary shadow-lg mb-2">
                     <div class="card-header bg-primary text-white fw-bold d-flex justify-content-between align-items-center" style="background-color: #0d47a1 !important;">
@@ -50,12 +48,10 @@
                             Se habilita un teléfono especial para recibir llamados y solicitudes de apoyo.
                         </p>
                         
-                        <!-- Caja de enfoque a grupos vulnerables -->
                         <div class="alert alert-secondary text-light py-2 mx-auto" style="max-width: 800px; background-color: #1a233a; border-color: #2c3e50;">
                             <strong>Atención especialmente dirigida a:</strong> Personas mayores, personas con discapacidad y vecinos/as con problemas de movilidad.
                         </div>
                         
-                        <!-- Botón de llamada gigante -->
                         <div class="my-4">
                             <span class="d-block text-warning small mb-2 fw-bold">TELÉFONO DE ATENCIÓN (SE SOLICITA USO RESPONSABLE)</span>
                             <a href="tel:552612142" class="btn btn-primary btn-lg fw-bold px-5 py-3 rounded-pill shadow" style="font-size: 2.5rem; background-color: #0d47a1; border: none;">
@@ -65,15 +61,11 @@
                     </div>
                 </div>
             </div>
-            <!-- COLUMNA IZQUIERDA: Transmisión Directa desde la web de Taltal TV (ocupa 8 de 12 espacios) -->
-            <div class="col-lg-8">
-                <!-- Aquí incrustamos la página de Taltal TV mediante un iframe -->
-                <iframe src="https://www.taltaltv.net/data/iptv%20local.HTML" class="visor-tv" allowfullscreen></iframe>
-            </div>
 
-            <!-- COLUMNA DERECHA: Tarjetas de Información Adicional (ocupa 4 de 12 espacios) -->
-            <div class="col-lg-4">
-                
+            <!-- TARJETAS DE INFORMACIÓN (Distribuidas en 3 columnas) -->
+            
+            <!-- Columna 1 -->
+            <div class="col-md-6 col-lg-4">
                 <!-- Tarjeta 1: Cámaras de Paranal -->
                 <div class="card bg-dark border-secondary mb-3 shadow">
                     <div class="card-header border-secondary fw-bold text-info d-flex justify-content-between align-items-center">
@@ -81,7 +73,6 @@
                         <small id="estado-paranal" class="text-muted">Actualizando...</small>
                     </div>
                     <div class="card-body text-center p-0" style="background-color: #000; border-radius: 0 0 6px 6px; overflow: hidden;">
-                        <!-- La imagen ocupará todo el ancho disponible -->
                         <img id="camara-paranal" src="https://www.eso.org/public/archives/static/pano/latest/pano_PV_960x.jpg" alt="Panorámica Paranal" style="width: 100%; height: auto; display: block;">
                     </div>
                 </div>
@@ -93,7 +84,6 @@
                         <small id="estado-sismos" class="text-muted">Actualizando...</small>
                     </div>
                     <div class="card-body p-0">
-                        <!-- Aquí se inyectará la lista de sismos mediante JavaScript -->
                         <ul id="lista-sismos" class="list-group list-group-flush rounded-bottom">
                             <li class="list-group-item bg-dark text-white text-center py-3">
                                 <div class="spinner-border text-danger spinner-border-sm" role="status"></div>
@@ -102,14 +92,16 @@
                         </ul>
                     </div>
                 </div>
+            </div>
 
+            <!-- Columna 2 -->
+            <div class="col-md-6 col-lg-4">
                 <!-- Tarjeta 3: Clima local (Windy) -->
-                <div class="card bg-dark border-secondary shadow">
+                <div class="card bg-dark border-secondary mb-3 shadow">
                     <div class="card-header border-secondary fw-bold text-warning">
                         ⛅ Condiciones Meteorológicas
                     </div>
                     <div class="card-body p-0">
-                        <!-- Contenedor responsivo para el mapa de Windy -->
                         <div style="width: 100%; height: 350px; border-radius: 0 0 6px 6px; overflow: hidden;">
                             <iframe 
                                 width="100%" 
@@ -120,131 +112,119 @@
                             </iframe>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Columna 3 -->
+            <div class="col-md-6 col-lg-4">
+                <!-- Tarjeta 6: Teléfonos de Emergencia -->
+                <div class="card bg-dark border-secondary mb-3 shadow">
+                    <div class="card-header border-secondary fw-bold text-white bg-danger bg-gradient">
+                        📞 Teléfonos de Emergencia
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush rounded-bottom" style="font-size: 0.9rem;">
+                            <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
+                                <div class="d-flex justify-content-between w-100 mb-2">
+                                    <span>🚒 Bomberos</span>
+                                    <a href="tel:132" class="badge bg-danger rounded-pill text-decoration-none fs-6">132</a>
+                                </div>
+                                <div class="d-flex justify-content-end w-100 gap-2">
+                                    <a href="tel:+56976025385" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 9 7602 5385</a>
+                                    <a href="tel:+56963923920" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 9 6392 3920</a>
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                                <span>🚑 Ambulancia (SAMU)</span>
+                                <a href="tel:131" class="badge bg-primary rounded-pill text-decoration-none fs-6">131</a>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                                <span>🚓 Carabineros</span>
+                                <a href="tel:133" class="badge bg-success rounded-pill text-decoration-none fs-6">133</a>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
+                                <div class="d-flex justify-content-between w-100 mb-1">
+                                    <span>⚓ Capitanía de Puerto</span>
+                                    <a href="tel:137" class="badge bg-info text-dark rounded-pill text-decoration-none">137</a>
+                                </div>
+                                <div class="d-flex justify-content-end w-100">
+                                    <a href="tel:+56552611033" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 55 2611033</a>
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+                                <span>🚨 Seguridad Ciudadana</span>
+                                <a href="tel:+56973486934" class="badge bg-warning text-dark rounded-pill text-decoration-none">+56 9 7348 6934</a>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
+                                <div class="d-flex justify-content-between w-100 mb-1">
+                                    <span>⚡ CGE (WhatsApp)</span>
+                                    <a href="https://wa.me/56989568479" target="_blank" class="badge bg-success rounded-pill text-decoration-none">+56 9 8956 8479 ↗</a>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.75rem;">* Tener número de cliente a mano</small>
+                            </li>
+                            <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
+                                <div class="d-flex justify-content-between w-100 mb-1">
+                                    <span>💧 Aguas Antofagasta</span>
+                                    <a href="tel:6007000101" class="badge bg-primary rounded-pill text-decoration-none">600 700 01 01</a>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.75rem;">* Tener número de cliente a mano</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Tarjeta 4: Radios Locales -->
-                <div class="card bg-dark border-secondary mt-3 shadow">
+                <div class="card bg-dark border-secondary mb-3 shadow">
                     <div class="card-header border-secondary fw-bold text-success">
                         📻 Radios Locales
                     </div>
-                        <div class="card-body p-3 text-center">
-                            
-                            <!-- Botones de selección -->
-                            <div class="btn-group w-100 mb-3" role="group">
-                                <button type="button" class="btn btn-outline-success btn-sm active" onclick="cambiarRadio('https://sonic.portalfoxmix.cl/9926/stream', 'iframe', this)">Taltal FM</button>
-                                <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://sonando-us.digitalproserver.com/carnaval_antofagasta.aac', 'iframe', this)">Carnaval/AMC</button>
-                                <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://streaming01.xhost.cl:8034/stream?type=http&nocache=13', 'audio', this)">Definicion</button>
-                            </div>
-                    
-                            <!-- Contenedor dinámico del reproductor -->
-                            <div style="width: 100%; height: 110px; border-radius: 6px; overflow: hidden; background-color: #141418; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
-                                
-                                <!-- Visor para las páginas web (Taltal FM y AMC) -->
-                                <iframe id="iframe-radio" src="https://radiotaltalfm.cl/reproductor/" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
-                                
-                                <!-- Reproductor nativo para el enlace directo (Oculto por defecto) -->
-                                <audio id="audio-radio" controls style="display: none; width: 95%; outline: none;" preload="none">
-                                    <source src="" type="audio/mpeg">
-                                    Tu navegador no soporta el audio.
-                                </audio>
-                    
-                            </div>
+                    <div class="card-body p-3 text-center">
+                        <div class="btn-group w-100 mb-3" role="group">
+                            <button type="button" class="btn btn-outline-success btn-sm active" onclick="cambiarRadio('https://sonic.portalfoxmix.cl/9926/stream', 'iframe', this)">Taltal FM</button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://sonando-us.digitalproserver.com/carnaval_antofagasta.aac', 'iframe', this)">Carnaval/AMC</button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://streaming01.xhost.cl:8034/stream?type=http&nocache=13', 'audio', this)">Definicion</button>
+                        </div>
+                        <div style="width: 100%; height: 110px; border-radius: 6px; overflow: hidden; background-color: #141418; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
+                            <iframe id="iframe-radio" src="https://radiotaltalfm.cl/reproductor/" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
+                            <audio id="audio-radio" controls style="display: none; width: 95%; outline: none;" preload="none">
+                                <source src="" type="audio/mpeg">
+                                Tu navegador no soporta el audio.
+                            </audio>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Tarjeta 5: Informes SENAPRED -->
-                    <div class="card bg-dark border-secondary mt-3 shadow">
-                        <div class="card-header border-secondary fw-bold text-white" style="background-color: #d35400;">
-                            📋 Informes y Alertas SENAPRED
-                        </div>
-                        <div class="card-body p-3 text-center">
-                            <p class="text-muted small mb-3">
-                                Acceso directo al filtro oficial de incidentes, resoluciones y reportes de emergencia a nivel regional y nacional.
-                            </p>
-                            <!-- El target="_blank" asegura que se abra en una pestaña nueva -->
-                            <a href="https://senapred.cl/informate/alertas/" target="_blank" rel="noopener noreferrer" class="btn btn-warning w-100 fw-bold shadow-sm">
-                                Abrir Buscador de Informes ↗
-                            </a>
-                        </div>
+                <!-- Tarjeta 5: Informes SENAPRED -->
+                <div class="card bg-dark border-secondary mb-3 shadow">
+                    <div class="card-header border-secondary fw-bold text-white" style="background-color: #d35400;">
+                        📋 Informes y Alertas SENAPRED
                     </div>
-                    <!-- Tarjeta 6: Teléfonos de Emergencia -->
-                    <div class="card bg-dark border-secondary mt-3 shadow">
-                        <div class="card-header border-secondary fw-bold text-white bg-danger bg-gradient">
-                            📞 Teléfonos de Emergencia
-                        </div>
-                        <div class="card-body p-0">
-                            <ul class="list-group list-group-flush rounded-bottom" style="font-size: 0.9rem;">
-                                
-                                <!-- Bomberos -->
-                                <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
-                                    <div class="d-flex justify-content-between w-100 mb-2">
-                                        <span>🚒 Bomberos</span>
-                                        <a href="tel:132" class="badge bg-danger rounded-pill text-decoration-none fs-6">132</a>
-                                    </div>
-                                    <div class="d-flex justify-content-end w-100 gap-2">
-                                        <a href="tel:+56976025385" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 9 7602 5385</a>
-                                        <a href="tel:+56963923920" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 9 6392 3920</a>
-                                    </div>
-                                </li>
-                                
-                                <!-- Ambulancia -->
-                                <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
-                                    <span>🚑 Ambulancia (SAMU)</span>
-                                    <a href="tel:131" class="badge bg-primary rounded-pill text-decoration-none fs-6">131</a>
-                                </li>
-                                
-                                <!-- Carabineros -->
-                                <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
-                                    <span>🚓 Carabineros</span>
-                                    <a href="tel:133" class="badge bg-success rounded-pill text-decoration-none fs-6">133</a>
-                                </li>
-                                
-                                <!-- Capitanía de Puerto -->
-                                <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
-                                    <div class="d-flex justify-content-between w-100 mb-1">
-                                        <span>⚓ Capitanía de Puerto</span>
-                                        <a href="tel:137" class="badge bg-info text-dark rounded-pill text-decoration-none">137</a>
-                                    </div>
-                                    <div class="d-flex justify-content-end w-100">
-                                        <a href="tel:+56552611033" class="badge border border-secondary text-light rounded-pill text-decoration-none">+56 55 2611033</a>
-                                    </div>
-                                </li>
-                                
-                                <!-- Seguridad Ciudadana -->
-                                <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
-                                    <span>🚨 Seguridad Ciudadana</span>
-                                    <a href="tel:+56973486934" class="badge bg-warning text-dark rounded-pill text-decoration-none">+56 9 7348 6934</a>
-                                </li>
-                                
-                                <!-- CGE -->
-                                <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
-                                    <div class="d-flex justify-content-between w-100 mb-1">
-                                        <span>⚡ CGE (WhatsApp)</span>
-                                        <a href="https://wa.me/56989568479" target="_blank" class="badge bg-success rounded-pill text-decoration-none">
-                                            +56 9 8956 8479 ↗
-                                        </a>
-                                    </div>
-                                    <small class="text-muted" style="font-size: 0.75rem;">* Tener número de cliente a mano</small>
-                                </li>
-                                
-                                <!-- Aguas Antofagasta -->
-                                <li class="list-group-item bg-dark text-white d-flex flex-column align-items-start py-2">
-                                    <div class="d-flex justify-content-between w-100 mb-1">
-                                        <span>💧 Aguas Antofagasta</span>
-                                        <a href="tel:6007000101" class="badge bg-primary rounded-pill text-decoration-none">600 700 01 01</a>
-                                    </div>
-                                    <small class="text-muted" style="font-size: 0.75rem;">* Tener número de cliente a mano</small>
-                                </li>
-                    
-                            </ul>
-                        </div>
+                    <div class="card-body p-3 text-center">
+                        <a href="https://senapred.cl/informate/alertas/" target="_blank" rel="noopener noreferrer" class="btn btn-warning w-100 fw-bold shadow-sm">
+                            Abrir Buscador de Informes ↗
+                        </a>
                     </div>
-                    
                 </div>
             </div>
+
+            <!-- TALTAL TV AL FINAL (Ocupa todo el ancho) -->
+            <div class="col-12 mt-4">
+                <div class="card border-secondary shadow bg-dark">
+                    <div class="card-header border-secondary fw-bold" style="color: #d35400;">
+                        📺 Transmisión Oficial Taltal TV
+                    </div>
+                    <div class="card-body p-0">
+                        <iframe src="https://www.taltaltv.net/data/iptv%20local.HTML" class="visor-tv border-0 rounded-0 rounded-bottom" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <!-- BOOTSTRAP 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.css"></script>
+    
     <!-- SCRIPT DE SISMOLOGÍA DE CHILE -->
     <script>
         async function cargarSismos() {
@@ -255,24 +235,17 @@
             try {
                 const respuesta = await fetch(urlSismos);
                 const sismos = await respuesta.json();
-                
-                // Limpiar la lista de carga
                 contenedor.innerHTML = '';
-                
-                // Tomar solo los últimos 3 sismos (puedes cambiar el 3 por el número que quieras)
                 const ultimosSismos = sismos.slice(0, 3);
                 
                 ultimosSismos.forEach(sismo => {
-                    // Configurar el color de la magnitud según su fuerza
                     const magnitud = parseFloat(sismo.Magnitud);
-                    let colorMag = 'bg-secondary'; // Magnitud baja
-                    if (magnitud >= 4.0 && magnitud < 5.0) colorMag = 'bg-warning text-dark'; // Media
-                    if (magnitud >= 5.0) colorMag = 'bg-danger'; // Alta
+                    let colorMag = 'bg-secondary';
+                    if (magnitud >= 4.0 && magnitud < 5.0) colorMag = 'bg-warning text-dark';
+                    if (magnitud >= 5.0) colorMag = 'bg-danger';
                     
-                    // Formatear la fecha (cortar los segundos para que se vea más limpio)
                     const fechaCorta = sismo.Fecha.substring(0, 16);
     
-                    // Crear el elemento de la lista para cada sismo
                     const elemento = `
                         <li class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
                             <div class="ms-2 me-auto">
@@ -285,7 +258,6 @@
                     contenedor.innerHTML += elemento;
                 });
                 
-                // Actualizar el estado con la hora de carga
                 const ahora = new Date();
                 estado.innerText = `Actualizado: ${ahora.getHours().toString().padStart(2, '0')}:${ahora.getMinutes().toString().padStart(2, '0')}`;
                 
@@ -299,10 +271,7 @@
             }
         }
     
-        // Cargar los sismos apenas se abra la página
         cargarSismos();
-        
-        // Configurar para que se actualice solo cada 5 minutos (300000 milisegundos)
         setInterval(cargarSismos, 300000);
     </script>
     
@@ -312,30 +281,22 @@
             const imgElement = document.getElementById('camara-paranal');
             const estadoCamara = document.getElementById('estado-paranal');
             
-            // La URL exacta que encontraste inspeccionando el código
             const baseUrl = 'https://www.eso.org/public/archives/static/pano/latest/pano_PV_960x.jpg';
-            
-            // Obtenemos el tiempo actual para engañar al caché
             const tiempo = new Date().getTime();
             
-            // Le pegamos el tiempo al final de la URL (ej: ?t=170814... )
             imgElement.src = `${baseUrl}?t=${tiempo}`;
             
-            // Actualizamos el reloj de revisión
             const ahora = new Date();
             estadoCamara.innerText = `Revisado: ${ahora.getHours().toString().padStart(2, '0')}:${ahora.getMinutes().toString().padStart(2, '0')}`;
         }
     
-        // Ejecutar una vez al abrir la página
         recargarCamaraParanal();
-        
-        // Configurar para revisar si hay foto nueva cada 1 hora (3600000 milisegundos)
         setInterval(recargarCamaraParanal, 3600000);
     </script>
+
     <!-- SCRIPT RADIOS LOCALES -->
     <script>
         function cambiarRadio(url, tipo, boton) {
-            // Manejar la parte visual de los botones (marcar cuál está activo)
             let botones = boton.parentElement.children;
             for (let b of botones) {
                 b.classList.remove('active');
@@ -345,12 +306,10 @@
             const iframe = document.getElementById('iframe-radio');
             const audio = document.getElementById('audio-radio');
     
-            // Pausar y limpiar cualquier reproducción activa para que no se superpongan
             iframe.src = '';
             audio.pause();
             audio.src = '';
     
-            // Mostrar el reproductor correcto según el formato del enlace
             if (tipo === 'iframe') {
                 iframe.style.display = 'block';
                 audio.style.display = 'none';
@@ -359,7 +318,6 @@
                 iframe.style.display = 'none';
                 audio.style.display = 'block';
                 audio.src = url;
-                // Pequeño retraso para asegurar que el navegador inicie el audio
                 setTimeout(() => {
                     audio.play().catch(e => console.log("Esperando clic para reproducir por seguridad del navegador"));
                 }, 100);
