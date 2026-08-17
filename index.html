@@ -93,6 +93,52 @@
                             </iframe>
                         </div>
                     </div>
+                <!-- Tarjeta 4: Radios Locales -->
+                <div class="card bg-dark border-secondary mt-3 shadow">
+                    <div class="card-header border-secondary fw-bold text-success">
+                        📻 Radios Locales
+                    </div>
+                        <div class="card-body p-3 text-center">
+                            
+                            <!-- Botones de selección -->
+                            <div class="btn-group w-100 mb-3" role="group">
+                                <button type="button" class="btn btn-outline-success btn-sm active" onclick="cambiarRadio('https://radiotaltalfm.cl/reproductor/', 'iframe', this)">Taltal FM</button>
+                                <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://www.amcmediostaltal.cl/radio-amc-digital', 'iframe', this)">AMC Digital</button>
+                                <button type="button" class="btn btn-outline-success btn-sm" onclick="cambiarRadio('https://streaming01.xhost.cl:8034/stream?type=http&nocache=13', 'audio', this)">Señal Directa</button>
+                            </div>
+                    
+                            <!-- Contenedor dinámico del reproductor -->
+                            <div style="width: 100%; height: 110px; border-radius: 6px; overflow: hidden; background-color: #141418; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
+                                
+                                <!-- Visor para las páginas web (Taltal FM y AMC) -->
+                                <iframe id="iframe-radio" src="https://radiotaltalfm.cl/reproductor/" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
+                                
+                                <!-- Reproductor nativo para el enlace directo (Oculto por defecto) -->
+                                <audio id="audio-radio" controls style="display: none; width: 95%; outline: none;" preload="none">
+                                    <source src="" type="audio/mpeg">
+                                    Tu navegador no soporta el audio.
+                                </audio>
+                    
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 5: Informes SENAPRED -->
+                    <div class="card bg-dark border-secondary mt-3 shadow">
+                        <div class="card-header border-secondary fw-bold text-white" style="background-color: #d35400;">
+                            📋 Informes y Alertas SENAPRED
+                        </div>
+                        <div class="card-body p-3 text-center">
+                            <p class="text-muted small mb-3">
+                                Acceso directo al filtro oficial de incidentes, resoluciones y reportes de emergencia a nivel regional y nacional.
+                            </p>
+                            <!-- El target="_blank" asegura que se abra en una pestaña nueva -->
+                            <a href="https://senapred.cl/informate/alertas/" target="_blank" rel="noopener noreferrer" class="btn btn-warning w-100 fw-bold shadow-sm">
+                                Abrir Buscador de Informes ↗
+                            </a>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -186,6 +232,40 @@
         
         // Configurar para revisar si hay foto nueva cada 1 hora (3600000 milisegundos)
         setInterval(recargarCamaraParanal, 3600000);
+    </script>
+    <!-- SCRIPT RADIOS LOCALES -->
+    <script>
+        function cambiarRadio(url, tipo, boton) {
+            // Manejar la parte visual de los botones (marcar cuál está activo)
+            let botones = boton.parentElement.children;
+            for (let b of botones) {
+                b.classList.remove('active');
+            }
+            boton.classList.add('active');
+    
+            const iframe = document.getElementById('iframe-radio');
+            const audio = document.getElementById('audio-radio');
+    
+            // Pausar y limpiar cualquier reproducción activa para que no se superpongan
+            iframe.src = '';
+            audio.pause();
+            audio.src = '';
+    
+            // Mostrar el reproductor correcto según el formato del enlace
+            if (tipo === 'iframe') {
+                iframe.style.display = 'block';
+                audio.style.display = 'none';
+                iframe.src = url;
+            } else {
+                iframe.style.display = 'none';
+                audio.style.display = 'block';
+                audio.src = url;
+                // Pequeño retraso para asegurar que el navegador inicie el audio
+                setTimeout(() => {
+                    audio.play().catch(e => console.log("Esperando clic para reproducir por seguridad del navegador"));
+                }, 100);
+            }
+        }
     </script>
 </body>
 </html>
