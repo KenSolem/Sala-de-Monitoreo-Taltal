@@ -49,14 +49,13 @@
                 
                 <!-- Tarjeta 1: Cámaras de Paranal -->
                 <div class="card bg-dark border-secondary mb-3 shadow">
-                    <div class="card-header border-secondary fw-bold text-info">
-                        🔭 Observatorio Paranal (En vivo)
+                    <div class="card-header border-secondary fw-bold text-info d-flex justify-content-between align-items-center">
+                        <span>🔭 Observatorio Paranal</span>
+                        <small id="estado-paranal" class="text-muted">Actualizando...</small>
                     </div>
-                    <div class="card-body text-center p-0">
-                        <!-- Aquí puedes poner el iframe de YouTube de ESO o la imagen web -->
-                        <div class="p-4 text-muted">
-                            <small><em>[Espacio para incrustar la cámara de ESO]</em></small>
-                        </div>
+                    <div class="card-body text-center p-0" style="background-color: #000; border-radius: 0 0 6px 6px; overflow: hidden;">
+                        <!-- La imagen ocupará todo el ancho disponible -->
+                        <img id="camara-paranal" src="https://www.eso.org/public/archives/static/pano/latest/pano_PV_960x.jpg" alt="Panorámica Paranal" style="width: 100%; height: auto; display: block;">
                     </div>
                 </div>
 
@@ -160,6 +159,33 @@
         
         // Configurar para que se actualice solo cada 5 minutos (300000 milisegundos)
         setInterval(cargarSismos, 300000);
+    </script>
+    
+    <!-- SCRIPT CÁMARA PARANAL -->
+    <script>
+        function recargarCamaraParanal() {
+            const imgElement = document.getElementById('camara-paranal');
+            const estadoCamara = document.getElementById('estado-paranal');
+            
+            // La URL exacta que encontraste inspeccionando el código
+            const baseUrl = 'https://www.eso.org/public/archives/static/pano/latest/pano_PV_960x.jpg';
+            
+            // Obtenemos el tiempo actual para engañar al caché
+            const tiempo = new Date().getTime();
+            
+            // Le pegamos el tiempo al final de la URL (ej: ?t=170814... )
+            imgElement.src = `${baseUrl}?t=${tiempo}`;
+            
+            // Actualizamos el reloj de revisión
+            const ahora = new Date();
+            estadoCamara.innerText = `Revisado: ${ahora.getHours().toString().padStart(2, '0')}:${ahora.getMinutes().toString().padStart(2, '0')}`;
+        }
+    
+        // Ejecutar una vez al abrir la página
+        recargarCamaraParanal();
+        
+        // Configurar para revisar si hay foto nueva cada 1 hora (3600000 milisegundos)
+        setInterval(recargarCamaraParanal, 3600000);
     </script>
 </body>
 </html>
